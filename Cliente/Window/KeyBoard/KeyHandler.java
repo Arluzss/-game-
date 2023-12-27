@@ -14,6 +14,7 @@ public class KeyHandler implements KeyListener{
     @Override
     public void keyPressed(KeyEvent e) {
         keyCode = e.getKeyCode();
+        System.out.println(keyCode);
         if(e.getKeyCode() == KeyEvent.VK_A){
             keyCode = e.getKeyCode();
             System.out.println("left pressed");

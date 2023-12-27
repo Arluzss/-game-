@@ -31,12 +31,9 @@ public class Sending {
             outputStream.writeObject(players);
             outputStream.flush();
             byte[] byteArray = outputByte.toByteArray();
-            if(p.getAddress() != null){
-                packetSending = new DatagramPacket(byteArray, byteArray.length, p.getAddress(), 2007);
-            }
-            if (packetSending != null) {
-                socket.send(packetSending);
-            }
+            packetSending = new DatagramPacket(byteArray, byteArray.length, p.getAddress(), 2007);
+            socket.send(packetSending);
+            outputStream.close();
         } catch (IOException | NullPointerException e) {
             // System.out.println(e.getMessage());
         }

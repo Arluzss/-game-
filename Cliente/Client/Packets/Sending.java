@@ -25,17 +25,27 @@ public class Sending {
         outputStream = new ObjectOutputStream(outputByte);
     }
 
-    public void sendEncapsulation(InetAddress address,int o) {
+    public void sendEncapsulation(InetAddress address, int o) {
         try {
             outputStream.writeInt(o);
             outputStream.flush();
             byte[] byteArray = outputByte.toByteArray();
             packetSending = new DatagramPacket(byteArray, byteArray.length, address, 2008);
-            if(packetSending != null){
+    
+            if (packetSending != null) {
                 socket.send(packetSending);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+    
 }

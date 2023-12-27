@@ -20,21 +20,24 @@ public class Receive {
     public Receive() throws SocketException{
         System.out.println("PORTA " + PORT + " PARA RECEBER PACOTES");
         socket = new DatagramSocket(PORT);
+        packetReceive = new DatagramPacket(new byte[500], 500);
     }
 
-    public PlayerCords[] receivePacket() throws IOException{
-        byte[] buffer = new byte[1024];
-        packetReceive = new DatagramPacket(buffer, buffer.length);
+    public PlayerCords[] receivePacket() throws IOException {
         socket.receive(packetReceive);
-
+    
         byte[] dados = packetReceive.getData();
         inputByte = new ByteArrayInputStream(dados);
         inputStream = new ObjectInputStream(inputByte);
         try {
-            PlayerCords[] p = (PlayerCords[]) inputStream.readObject();
-            return p;
+            return (PlayerCords[]) inputStream.readObject();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                packetReceive.setData(new byte[500]);
+                inputStream.close();
+            }
         }
         return null;
     }

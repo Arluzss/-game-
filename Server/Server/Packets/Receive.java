@@ -13,25 +13,33 @@ public class Receive {
     private DatagramPacket packetReceive;
     private DatagramSocket socket;
     private ObjectInputStream inputStream;
+    byte[] buffer;
     private ByteArrayInputStream inputByte;
     private int PORT = 2008;
+    private int i;
 
-    public Receive() throws SocketException{
+    public Receive() throws SocketException {
         System.out.println("PORTA " + PORT + " PARA RECEBER PACOTES");
         socket = new DatagramSocket(PORT);
-    }
-
-    public InetAddress receivePacket() throws IOException{
-        byte[] buffer = new byte[1024];
+        buffer = new byte[1024];
         packetReceive = new DatagramPacket(buffer, buffer.length);
-        socket.receive(packetReceive);
-        byte[] dados = packetReceive.getData();
-        inputByte = new ByteArrayInputStream(dados);
-        inputStream = new ObjectInputStream(inputByte);
-        return packetReceive.getAddress();
     }
 
-    public ObjectInputStream getInputStream(){
-        return inputStream;
+    public InetAddress receivePacket() throws IOException {
+        try {
+            socket.receive(packetReceive);
+            byte[] dados = packetReceive.getData();
+            inputByte = new ByteArrayInputStream(dados);
+            inputStream = new ObjectInputStream(inputByte);
+            i = inputStream.readInt();
+            inputStream.close();
+            return packetReceive.getAddress();
+        } finally {
+            packetReceive.setData(new byte[1024]);
+        }
+    }
+
+    public int getKeyCode() throws IOException {
+        return i;
     }
 }
