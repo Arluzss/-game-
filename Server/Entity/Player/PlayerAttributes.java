@@ -5,7 +5,7 @@ package Entity.Player;
  */
 public class PlayerAttributes {
 
-    protected int timeAttack = 0;
+    protected int timeAttack = 510;
     protected float velocityX = 0f;
     protected float velocityY = 0f;
     protected int attackX = 150;
@@ -18,4 +18,15 @@ public class PlayerAttributes {
     protected final int WIDTH = 50;
     protected final int HEIGHT = 150;
 
+    public void setTimeAttack(int timeAttack) {
+        this.timeAttack = timeAttack;
+    }
+
+    public int getTimeAttack() {
+        return timeAttack;
+    }
+
+    public int getActualTimeAttack() {
+        return timeAttack;
+    }
 }

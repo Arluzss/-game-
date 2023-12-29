@@ -95,8 +95,11 @@ public class Conn {
         if(playerLength != receive.getPlayerLength()){
             playerLength = receive.getPlayerLength();
             players.add(new Player());
-            gamePanel.setPlayers(players);
         }
+    }
+
+    public List<Player> getPlayer() {
+        return players;
     }
 
     public static String getIp() {

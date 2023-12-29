@@ -17,6 +17,10 @@ public class Player {
     }
 
     public void draw(Graphics2D g) throws NullPointerException{
+        System.out.println("Cords: " + cords.getX() + " " + cords.getY() + " " + cords.getLeftOrRight() + " " + cords.getAttack());
+        if(cords.getLeftOrRight() == null){
+            System.out.println("Cords nulo" + getID());
+        }
         if(cords.getLeftOrRight() && !cords.getAttack()){
             image = new ImageIcon("Entity/Player/Images/galoDireita.png").getImage();
         }
@@ -24,10 +28,10 @@ public class Player {
             image = new ImageIcon("Entity/Player/Images/galoEsquerda.png").getImage();
         }
         if(cords.getAttack() && cords.getLeftOrRight()){
-            image = new ImageIcon("Entity/Player/Images/galoAttack.png").getImage();
+            image = new ImageIcon("Entity/Player/Images/galoAtaqueEsquerda.png").getImage();
         }
         if(cords.getAttack() && !cords.getLeftOrRight()){
-            image = new ImageIcon("Entity/Player/Images/galoAttack.png").getImage();
+            image = new ImageIcon("Entity/Player/Images/galoAtaqueDireita.png").getImage();
         }
         g.drawImage(image, cords.getX(), cords.getY(), WIDTH, HEIGHT, null);
     }

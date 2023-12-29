@@ -53,6 +53,7 @@ public class Player extends PlayerAttributes{
                 break;
             case 74:
                 this.setAttack(true);
+                this.cords.setAttack(true);
                 break;
             case 75:
                 System.out.println("defendeu");
@@ -71,17 +72,17 @@ public class Player extends PlayerAttributes{
                     if (this.getTimeAttack() <= 0 && playerAttackColision(players[i]) && this.getAttack()) {
                         this.playerDemage(players[i]);
                         this.setAttack(false);
-                        this.setTimeAttack();
+                        this.cords.setAttack(false);
                         System.out.println("attcou");
-                    } else if (this.getAttack()) {
+                } else if (this.getAttack() && this.getTimeAttack() <= 250) {
                         this.setAttack(false);
-                        this.setAttack(false);
-                        this.setTimeAttack();
+                        this.cords.setAttack(false);
+                        setTimeAttack(510);
                         System.out.println("errou");
                     }
                 }
             }
-            cords.setAttack(this.getAttack());
+            this.setTimeAttack(this.getTimeAttack() - 1);
             } catch (NullPointerException e) {
                 //
             }
@@ -97,15 +98,6 @@ public class Player extends PlayerAttributes{
 
     private void playerDemage(Player p){
         p.getCords().setLife(p.getCords().getLife() - 5);
-    }
-
-    public void setTimeAttack() {
-        timeAttack = 510;
-    }
-
-    public int getTimeAttack() {
-        timeAttack--;
-        return timeAttack;
     }
 
     public PlayerCords getCords() {

@@ -17,7 +17,6 @@ public class GamePanel extends JPanel {
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
     private Conn conn;
-    private List<Player> players;
     private KeyHandler keyH;
     private double drawnInterval = 1000000000 / 60;
     private double nextDrawn = System.nanoTime() + drawnInterval;
@@ -25,8 +24,7 @@ public class GamePanel extends JPanel {
     // TODO deixar a quantidade com base no numero de jogadores recebidos do pacote
     public GamePanel() {
         try {
-            players = new ArrayList<Player>();
-            conn = new Conn(this);
+            conn = new Conn(this);  
             keyH = new KeyHandler();
             initComponents();
         } catch (IOException e) {
@@ -48,11 +46,11 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         threadVelocity();
         Graphics2D g2D = (Graphics2D) g;
+        List<Player> players = new ArrayList<>(conn.getPlayer());
         players.forEach((pla) -> {
             try {
                 pla.draw(g2D);
             } catch (NullPointerException e) {
-                e.printStackTrace();
             }
         });
         g2D.dispose();
@@ -73,7 +71,4 @@ public class GamePanel extends JPanel {
         }
     }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
 }

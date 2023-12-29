@@ -76,8 +76,8 @@ public class Running {
                 try {
                     player.verifyColision(copiaPlayers.toArray(new Player[copiaPlayers.size()]));
                     Thread.sleep(0, 10);
-                } catch (InterruptedException | NullPointerException eee) {
-                    eee.printStackTrace();
+                } catch (InterruptedException | NullPointerException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -95,9 +95,7 @@ public class Running {
                         .filter(player -> player.getAddress().equals(enderecoRecebido))
                         .findFirst()
                         .orElse(null);
-                if (jogadorEncontrado != null) {
-                    jogadorEncontrado.play(receive.getKeyCode());
-                }
+                if (jogadorEncontrado != null) jogadorEncontrado.play(receive.getKeyCode());
             } catch (IOException e) {
                 e.printStackTrace(); // Apenas um exemplo, imprime o rastreamento da pilha
             }

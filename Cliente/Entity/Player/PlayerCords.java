@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class PlayerCords implements Serializable{
     private static final long serialVersionUID = 123456789L;
-    private final int ID;
+    private  int ID;
     private int x;
     private int y;
     private Boolean leftOrRight;
     private int life;
-    private boolean attack;
+    private boolean attack = false;
 
     public PlayerCords(int ID){
         this.ID = ID;
