@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-
 import Client.Conn;
-import Window.MainScreen;
+import Window.GamePanel;
+import Window.WindowA;
 
 public class AddIpScreen extends JFrame implements ActionListener {
 
@@ -52,6 +52,6 @@ public class AddIpScreen extends JFrame implements ActionListener {
         Conn.setIp(ip.getText());
         Conn.setPort(Integer.parseInt(port.getText()));
         this.setVisible(false);
-        new MainScreen();
+        new WindowA(new GamePanel());
     }
 }

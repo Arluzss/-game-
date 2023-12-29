@@ -4,34 +4,32 @@ import java.io.IOException;
 import java.net.InetAddress;
 
 public class Player extends PlayerAttributes{
-    private static int ID = 0;
     private final int ID2;
-    private InetAddress address;
+    private static int ID = 0;
     private PlayerCords cords;
-    private float positionX = 0f;
-    private float positionY = 0f;
-    private float positionAttackX = 0f;
-    private float positionAttackY = 0f;
+    private InetAddress address;
+    private final float WALKING_SPEED = 0.80f;
+    private final float JUMPING_SPEED = 5.5f;
     private Boolean attack;
 
     public Player(InetAddress address) {
-        cords = new PlayerCords(ID);
+        this.cords = new PlayerCords(ID);
         this.address = address;
-        ID2 = ID;
+        this.ID2 = ID;
         ID++;
     }
 
     public void runningCoords() throws IOException {
-        positionY += velocityY;
-        positionX += velocityX;
-        positionAttackY = positionY;
-        cords.setX(positionX);
-        cords.setY(positionY);
+        this.positionY += velocityY;
+        this.positionX += velocityX;
+        this.positionAttackY = positionY;
+        this.cords.setX(positionX);
+        this.cords.setY(positionY);
 
-        if (HEIGHT + velocityY + positionY >= 450) {
+        if (HEIGHT + velocityY + positionY >= 850) {
             velocityY = 0;
         } else {
-            velocityY += gravity;
+            velocityY += GRAVITY;
         }
     }
 
@@ -39,18 +37,18 @@ public class Player extends PlayerAttributes{
         runningCoords();
         switch (keyCode) {
             case 68:
-                this.velocityX = 4;
-                positionAttackX = positionX;
-                cords.setLeftOrRight(true);
+                this.velocityX = WALKING_SPEED;
+                this.positionAttackX = positionX;
+                this.cords.setLeftOrRight(true);
                 break;
             case 65:
-                this.velocityX = -4;
+                this.velocityX = -WALKING_SPEED;
                 positionAttackX = positionX - 100;
-                cords.setLeftOrRight(false);
+                this.cords.setLeftOrRight(false);
                 break;
             case 32:
-                if (positionY > 250) {
-                    this.velocityY = -8;
+                if (positionY > 350) {
+                    this.velocityY = -JUMPING_SPEED;
                 }
                 break;
             case 74:
@@ -65,27 +63,27 @@ public class Player extends PlayerAttributes{
         }
     }
 
-    public void verifyColision(Player[] players) throws InterruptedException {
+    public void verifyColision(Player[] players) {
         for (int i = 0; i < players.length; i++) {
             try {
                 if(players[i] != null){
-                if (this.getID2() != players[i].getID2() && this.getTimeAttack() <= 0) {
-
-                    if (playerAttackColision(players[i]) && this.getAttack()) {
+                    if (this.getID2() != players[i].getID2()) {
+                    if (this.getTimeAttack() <= 0 && playerAttackColision(players[i]) && this.getAttack()) {
                         this.playerDemage(players[i]);
                         this.setAttack(false);
                         this.setTimeAttack();
-                        System.out.println("acertou");
-
+                        System.out.println("attcou");
                     } else if (this.getAttack()) {
                         this.setAttack(false);
+                        this.setAttack(false);
                         this.setTimeAttack();
+                        System.out.println("errou");
                     }
                 }
             }
-                Thread.sleep(0, 1);
+            cords.setAttack(this.getAttack());
             } catch (NullPointerException e) {
-                System.out.println("ERRO AO VERIFICAR COLISAO");
+                //
             }
         }
     }

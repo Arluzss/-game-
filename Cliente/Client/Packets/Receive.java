@@ -16,6 +16,7 @@ public class Receive {
     private ObjectInputStream inputStream;
     private ByteArrayInputStream inputByte;
     private int PORT = 2007;
+    private int playerLength;
 
     public Receive() throws SocketException{
         System.out.println("PORTA " + PORT + " PARA RECEBER PACOTES");
@@ -30,7 +31,9 @@ public class Receive {
         inputByte = new ByteArrayInputStream(dados);
         inputStream = new ObjectInputStream(inputByte);
         try {
-            return (PlayerCords[]) inputStream.readObject();
+            PlayerCords[] players = (PlayerCords[]) inputStream.readObject();
+            playerLength = players.length;
+            return players;
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -40,5 +43,9 @@ public class Receive {
             }
         }
         return null;
+    }
+
+    public int getPlayerLength() {
+        return playerLength;
     }
 }

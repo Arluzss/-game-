@@ -9,6 +9,7 @@ public class PlayerCords implements Serializable{
     private int y;
     private Boolean leftOrRight;
     private int life = 130;
+    private boolean attack = false;
 
     public PlayerCords(int ID){
         this.ID = ID;
@@ -46,6 +47,14 @@ public class PlayerCords implements Serializable{
         this.life = life;
     }
 
+    public void setAttack(boolean attack) {
+        this.attack = attack;
+    }
+    
+    public boolean getAttack() {
+        return attack;
+    }
+    
     public int getLife() {
         return life;
     }
