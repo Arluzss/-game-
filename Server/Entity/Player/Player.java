@@ -3,17 +3,17 @@ package Entity.Player;
 import java.io.IOException;
 import java.net.InetAddress;
 
-public class Player extends PlayerAttributes{
+public class Player extends PlayerAttributes {
     private final int ID2;
     private static int ID = 0;
-    private PlayerCords cords;
+    private PlayerInfo cords;
     private InetAddress address;
     private final float WALKING_SPEED = 0.80f;
     private final float JUMPING_SPEED = 5.5f;
     private Boolean attack;
 
     public Player(InetAddress address) {
-        this.cords = new PlayerCords(ID);
+        this.cords = new PlayerInfo(ID);
         this.address = address;
         this.ID2 = ID;
         ID++;
@@ -35,6 +35,7 @@ public class Player extends PlayerAttributes{
 
     public void play(int keyCode) throws IOException {
         runningCoords();
+        System.out.println(keyCode);
         switch (keyCode) {
             case 68:
                 this.velocityX = WALKING_SPEED;
@@ -67,26 +68,28 @@ public class Player extends PlayerAttributes{
     public void verifyColision(Player[] players) {
         for (int i = 0; i < players.length; i++) {
             try {
-                if(players[i] != null){
-                    if (this.getID2() != players[i].getID2()) {
-                    if (this.getTimeAttack() <= 0 && playerAttackColision(players[i]) && this.getAttack()) {
-                        this.playerDemage(players[i]);
-                        this.setAttack(false);
-                        this.cords.setAttack(false);
-                        System.out.println("attcou");
+                if (samePlayer(players[i]) && this.getTimeAttack() <= 0 && playerAttackColision(players[i]) && this.getAttack()) {
+                    this.playerDemage(players[i]);
+                    this.setAttack(false);
+                    this.cords.setAttack(false);
                 } else if (this.getAttack() && this.getTimeAttack() <= 250) {
-                        this.setAttack(false);
-                        this.cords.setAttack(false);
-                        setTimeAttack(510);
-                        System.out.println("errou");
-                    }
+                    this.setAttack(false);
+                    this.cords.setAttack(false);
+                    setTimeAttack(1510);
                 }
-            }
-            this.setTimeAttack(this.getTimeAttack() - 1);
+                this.setTimeAttack(this.getTimeAttack() - 1);
             } catch (NullPointerException e) {
                 //
             }
         }
+    }
+
+    private Boolean samePlayer(Player p) {
+        if (p != null) {
+            return this.getID2() == p.getID2();
+        }
+
+        return false;
     }
 
     private Boolean playerAttackColision(Player p) {
@@ -96,11 +99,11 @@ public class Player extends PlayerAttributes{
                 && this.positionAttackY <= p.positionY + p.HEIGHT;
     }
 
-    private void playerDemage(Player p){
+    private void playerDemage(Player p) {
         p.getCords().setLife(p.getCords().getLife() - 5);
     }
 
-    public PlayerCords getCords() {
+    public PlayerInfo getCords() {
         return cords;
     }
 

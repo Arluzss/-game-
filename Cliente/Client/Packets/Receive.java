@@ -7,7 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import Entity.Player.PlayerCords;
+import Entity.Player.PlayerInfo;
 
 public class Receive {
 
@@ -24,14 +24,15 @@ public class Receive {
         packetReceive = new DatagramPacket(new byte[500], 500);
     }
 
-    public PlayerCords[] receivePacket() throws IOException {
+    public PlayerInfo[] receivePacket() throws IOException, NullPointerException {
         socket.receive(packetReceive);
     
         byte[] dados = packetReceive.getData();
         inputByte = new ByteArrayInputStream(dados);
         inputStream = new ObjectInputStream(inputByte);
+
         try {
-            PlayerCords[] players = (PlayerCords[]) inputStream.readObject();
+            PlayerInfo[] players = (PlayerInfo[]) inputStream.readObject();
             playerLength = players.length;
             return players;
         } catch (ClassNotFoundException e) {
@@ -42,6 +43,7 @@ public class Receive {
                 inputStream.close();
             }
         }
+        
         return null;
     }
 

@@ -2,16 +2,16 @@ package Entity.Player;
 
 import java.io.Serializable;
 
-public class PlayerCords implements Serializable{
+public class PlayerInfo implements Serializable{
     private static final long serialVersionUID = 123456789L;
-    private  int ID;
+    private int ID;
     private int x;
     private int y;
     private Boolean leftOrRight;
-    private int life;
+    private int life = 130;
     private boolean attack = false;
 
-    public PlayerCords(int ID){
+    public PlayerInfo(int ID){
         this.ID = ID;
     }
 
@@ -58,11 +58,11 @@ public class PlayerCords implements Serializable{
     public int getLife() {
         return life;
     }
-
+    
     @Override
     public String toString() {
-        return "PlayerCords [ID=" + ID + ", x=" + x + ", y=" + y + ", leftOrRight=" + leftOrRight + ", life=" + life
-                + ", attack=" + attack + "]";
+        return "PlayerCords [ID=" + ID + ", x=" + x + ", y=" + y + "]";
     }
+
    
 }

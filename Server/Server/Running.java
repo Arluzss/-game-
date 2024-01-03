@@ -6,7 +6,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import Entity.Player.Player;
-import Entity.Player.PlayerCords;
+import Entity.Player.PlayerInfo;
 import Server.Packets.Receive;
 import Server.Packets.Sending;
 
@@ -16,7 +16,7 @@ public class Running {
     private Thread t3;
     private Thread t4;
     private Conn conn;
-    private PlayerCords[] playerCords;
+    private PlayerInfo[] playerCords;
     private Receive receive;
     private Sending sending;
     private List<Player> players2;
@@ -30,7 +30,7 @@ public class Running {
         t4 = new Thread(playerActions);
         receive = new Receive();
         sending = new Sending();
-        playerCords = new PlayerCords[QTD];
+        playerCords = new PlayerInfo[QTD];
         players2 = new ArrayList<Player>();
     }
 
@@ -59,9 +59,11 @@ public class Running {
             List<Player> copiaPlayers = new ArrayList<>(players2);
             for (Player player : copiaPlayers)
                 try {
-                    playerCords[player.getID2()] = player.getCords();
-                    sending.startStreamByte();
-                    sending.sendEncapsulation(playerCords, player);
+                    if (player != null) {
+                        sending.startStreamByte();
+                        sending.sendEncapsulation(playerCords, player);
+                        playerCords[player.getID2()] = player.getCords();
+                    }
                     Thread.sleep(1000 / 180);
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -91,11 +93,12 @@ public class Running {
             try {
                 InetAddress enderecoRecebido = receive.receivePacket();
 
-                jogadorEncontrado = copiaPlayers.stream()
-                        .filter(player -> player.getAddress().equals(enderecoRecebido))
-                        .findFirst()
-                        .orElse(null);
-                if (jogadorEncontrado != null) jogadorEncontrado.play(receive.getKeyCode());
+                jogadorEncontrado = copiaPlayers.stream().filter(player -> player.getAddress().
+                equals(enderecoRecebido)).
+                findFirst().orElse(null);
+
+                if (jogadorEncontrado != null)
+                    jogadorEncontrado.play(receive.getKeyCode());
             } catch (IOException e) {
                 e.printStackTrace(); // Apenas um exemplo, imprime o rastreamento da pilha
             }

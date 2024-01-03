@@ -2,10 +2,12 @@ package Window.OtherWindow;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
-import Client.Conn;
 import Window.GamePanel;
 import Window.WindowA;
 
@@ -49,9 +51,11 @@ public class AddIpScreen extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Conn.setIp(ip.getText());
-        Conn.setPort(Integer.parseInt(port.getText()));
-        this.setVisible(false);
-        new WindowA(new GamePanel());
+        try {
+            new WindowA(new GamePanel(new Socket(ip.getText(), Integer.parseInt(port.getText()))));
+            this.setVisible(false);
+        } catch (NumberFormatException | IOException e1) {
+            e1.printStackTrace();
+        }
     }
 }

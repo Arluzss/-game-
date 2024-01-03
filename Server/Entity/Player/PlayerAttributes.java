@@ -14,7 +14,7 @@ public class PlayerAttributes {
     protected float positionY = 0f;
     protected float positionAttackX = 0f;
     protected float positionAttackY = 0f;
-    protected final float GRAVITY = 0.15f;
+    protected final float GRAVITY = 0.1f;
     protected final int WIDTH = 50;
     protected final int HEIGHT = 150;
 

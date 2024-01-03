@@ -3,9 +3,10 @@ package Window;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.IOException;
+import java.net.Socket;
+
 import javax.swing.JPanel;
-import Client.Conn;
+import Client.Running;
 import Entity.Player.Player;
 import Window.KeyBoard.KeyHandler;
 import java.awt.Color;
@@ -16,20 +17,16 @@ public class GamePanel extends JPanel {
 
     private final int WIDTH = 1920;
     private final int HEIGHT = 1080;
-    private Conn conn;
+    private Running running;
     private KeyHandler keyH;
     private double drawnInterval = 1000000000 / 60;
     private double nextDrawn = System.nanoTime() + drawnInterval;
 
     // TODO deixar a quantidade com base no numero de jogadores recebidos do pacote
-    public GamePanel() {
-        try {
-            conn = new Conn(this);  
-            keyH = new KeyHandler();
-            initComponents();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public GamePanel(Socket socketConn) {
+        running = new Running(socketConn);
+        keyH = new KeyHandler();
+        initComponents();
     }
 
     private void initComponents() {
@@ -46,11 +43,12 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
         threadVelocity();
         Graphics2D g2D = (Graphics2D) g;
-        List<Player> players = new ArrayList<>(conn.getPlayer());
+        List<Player> players = new ArrayList<>(running.getPlayer());
         players.forEach((pla) -> {
             try {
                 pla.draw(g2D);
             } catch (NullPointerException e) {
+                System.err.println("ta vazio");
             }
         });
         g2D.dispose();

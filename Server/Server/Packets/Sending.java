@@ -7,7 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 import Entity.Player.Player;
-import Entity.Player.PlayerCords;
+import Entity.Player.PlayerInfo;
 
 public class Sending {
     private DatagramSocket socket;
@@ -26,7 +26,7 @@ public class Sending {
         outputStream = new ObjectOutputStream(outputByte);
     }
 
-    public void sendEncapsulation(PlayerCords[] players, Player p) {
+    public void sendEncapsulation(PlayerInfo[] players, Player p) {
         try {
             outputStream.writeObject(players);
             outputStream.flush();
