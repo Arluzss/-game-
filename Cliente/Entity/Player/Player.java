@@ -24,9 +24,6 @@ public class Player {
     }
 
     private void movePlayerDirection(){
-        if(cords.getLeftOrRight() == null){
-            System.out.println("Cords nulo" + getID());
-        }
         if(cords.getLeftOrRight() && !cords.getAttack()){
             image = new ImageIcon("Entity/Player/Images/galoDireita.png").getImage();
         }
@@ -46,7 +43,6 @@ public class Player {
         g.setColor(Color.GREEN);
         if(cords.getLife() > 0){
             g.fillRect(cords.getX() , cords.getY() - 50, cords.getLife(), HEIGHT /4);
-            System.out.println(cords.getLife());
         }
     }
 

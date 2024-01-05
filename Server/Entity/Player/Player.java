@@ -10,7 +10,7 @@ public class Player extends PlayerAttributes {
     private InetAddress address;
     private final float WALKING_SPEED = 0.80f;
     private final float JUMPING_SPEED = 5.5f;
-    private Boolean attack;
+    private Boolean attack = false;
 
     public Player(InetAddress address) {
         this.cords = new PlayerInfo(ID);
@@ -35,7 +35,6 @@ public class Player extends PlayerAttributes {
 
     public void play(int keyCode) throws IOException {
         runningCoords();
-        System.out.println(keyCode);
         switch (keyCode) {
             case 68:
                 this.velocityX = WALKING_SPEED;
@@ -53,8 +52,10 @@ public class Player extends PlayerAttributes {
                 }
                 break;
             case 74:
-                this.setAttack(true);
-                this.cords.setAttack(true);
+                if(this.getTimeAttack() <= 0){
+                    this.setAttack(true);
+                    this.cords.setAttack(true);
+                }
                 break;
             case 75:
                 System.out.println("defendeu");
@@ -67,29 +68,28 @@ public class Player extends PlayerAttributes {
 
     public void verifyColision(Player[] players) {
         for (int i = 0; i < players.length; i++) {
-            try {
-                if (samePlayer(players[i]) && this.getTimeAttack() <= 0 && playerAttackColision(players[i]) && this.getAttack()) {
-                    this.playerDemage(players[i]);
-                    this.setAttack(false);
-                    this.cords.setAttack(false);
-                } else if (this.getAttack() && this.getTimeAttack() <= 250) {
-                    this.setAttack(false);
-                    this.cords.setAttack(false);
-                    setTimeAttack(1510);
-                }
-                this.setTimeAttack(this.getTimeAttack() - 1);
-            } catch (NullPointerException e) {
-                //
+
+            if (this == players[i]) continue;
+    
+            if (this.getAttack() && this.playerAttackColision(players[i])) {
+                this.playerDemage(players[i]);
+                this.setAttack(false);
+                this.cords.setAttack(false);
+                this.setTimeAttack(1510);
             }
-        }
-    }
 
-    private Boolean samePlayer(Player p) {
-        if (p != null) {
-            return this.getID2() == p.getID2();
-        }
+            if(this.getAttack()){
+                this.setAttack(false);
+                this.cords.setAttack(false);
+            }
 
-        return false;
+            if (this.getTimeAttack() > 0) {
+                this.setTimeAttack(this.getTimeAttack() - 1);
+            } else if (this.getAttack()) {
+                this.setTimeAttack(1510);
+            }
+
+        }
     }
 
     private Boolean playerAttackColision(Player p) {
@@ -100,7 +100,7 @@ public class Player extends PlayerAttributes {
     }
 
     private void playerDemage(Player p) {
-        p.getCords().setLife(p.getCords().getLife() - 5);
+        p.getCords().setLife(p.getCords().getLife() - 50);
     }
 
     public PlayerInfo getCords() {
